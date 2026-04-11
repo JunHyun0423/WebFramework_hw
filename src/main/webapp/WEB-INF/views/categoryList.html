@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카테고리 목록</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', Arial, sans-serif;
+            width: 800px;
+            margin: 30px auto;
+        }
+
+        h1 {
+            border-bottom: 1px solid #999;
+            padding-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 7px 12px;
+            border: 1px solid #777;
+            background-color: #f1f1f1;
+            color: #222;
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 9px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eeeeee;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .delete-btn {
+            color: red;
+            background-color: white;
+            border: 1px solid #999;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        footer {
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            font-size: 13px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>카테고리 목록</h1>
+
+<!-- 등록, 삭제 결과 메시지 표시 -->
+<p class="success" th:if="${successMessage}" th:text="${successMessage}">성공 메시지</p>
+<p class="error" th:if="${errorMessage}" th:text="${errorMessage}">오류 메시지</p>
+
+<p>
+    <a class="btn" th:href="@{/categories/create}">카테고리 등록</a>
+    <a class="btn" th:href="@{/products}">상품 목록</a>
+</p>
+
+<p th:if="${#lists.isEmpty(categories)}">등록된 카테고리가 없습니다.</p>
+
+<table th:unless="${#lists.isEmpty(categories)}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>카테고리 이름</th>
+        <th>작업</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 카테고리 목록 출력 -->
+    <tr th:each="cat : ${categories}">
+        <td th:text="${cat.id}">1</td>
+        <td th:text="${cat.name}">전자제품</td>
+        <td>
+            <!-- 삭제는 POST 방식으로 처리 -->
+            <form th:action="@{/categories/{id}/delete(id=${cat.id})}" method="post" style="display:inline;">
+                <button type="submit" class="delete-btn">삭제</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<footer>
+    <p th:text="${'실습 수행 일시: ' + #temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss') + ' | 학번: 2171062 | 성명: 김준현'}"></p>
+</footer>
+
+</body>
+</html>
