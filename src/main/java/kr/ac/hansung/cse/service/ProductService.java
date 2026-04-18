@@ -79,6 +79,16 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    // 상품명에 검색어가 포함된 상품을 조회한다.
+    public List<Product> searchByName(String keyword) {
+        return productRepository.findByNameContaining(keyword);
+    }
+
+    // 선택한 카테고리에 속한 상품만 조회한다.
+    public List<Product> searchByCategory(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId);
+    }
+
     /**
      * ID로 상품 조회
      * Optional을 그대로 반환하여 Controller가 null 처리를 명시적으로 하도록 강제합니다.
