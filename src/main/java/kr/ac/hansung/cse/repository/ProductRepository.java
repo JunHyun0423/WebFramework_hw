@@ -70,6 +70,26 @@ public class ProductRepository {
         return query.getResultList();
     }
 
+    // 상품명에 검색어가 포함된 상품을 조회한다.
+    public List<Product> findByNameContaining(String keyword) {
+        return entityManager
+                .createQuery(
+                        "SELECT p FROM Product p LEFT JOIN FETCH p.category WHERE p.name LIKE :keyword ORDER BY p.id ASC",
+                        Product.class)
+                .setParameter("keyword", "%" + keyword + "%")
+                .getResultList();
+    }
+
+    // 선택한 카테고리에 해당하는 상품만 조회한다.
+    public List<Product> findByCategoryId(Long categoryId) {
+        return entityManager
+                .createQuery(
+                        "SELECT p FROM Product p LEFT JOIN FETCH p.category WHERE p.category.id = :categoryId ORDER BY p.id ASC",
+                        Product.class)
+                .setParameter("categoryId", categoryId)
+                .getResultList();
+    }
+
     /**
      * ID로 단일 상품 조회
      *
